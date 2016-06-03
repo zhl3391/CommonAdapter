@@ -11,16 +11,26 @@ import java.util.List;
  * Created by zhouhl on 2016/2/22.
  * CommonAdapter
  */
-public abstract class CommonAdapter<T> extends BaseAdapter{
+public abstract class CommonAdapter<T> extends BaseAdapter {
 
     private List<T> mDatas;
 
-    public CommonAdapter(List<T> datas){
+    public CommonAdapter(){
+
+    }
+
+    public CommonAdapter(List<T> datas) {
         this.mDatas = datas;
     }
 
-    public void setDatas(List<T> datas){
-        this.mDatas = datas;
+    public void setDatas(List<T> datas) {
+        if (mDatas != null) {
+            mDatas.clear();
+            mDatas.addAll(datas);
+        } else {
+            mDatas = datas;
+        }
+        notifyDataSetChanged();
     }
 
     @Override

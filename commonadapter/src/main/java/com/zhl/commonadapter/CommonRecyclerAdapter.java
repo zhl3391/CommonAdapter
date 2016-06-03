@@ -18,8 +18,22 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
 
+    public CommonRecyclerAdapter(){
+
+    }
+
     public CommonRecyclerAdapter(List<T> datas){
         this.mDatas = datas;
+    }
+
+    public void setDatas(List<T> datas) {
+        if (mDatas != null) {
+            mDatas.clear();
+            mDatas.addAll(datas);
+        } else {
+            mDatas = datas;
+        }
+        notifyDataSetChanged();
     }
 
     @Override
