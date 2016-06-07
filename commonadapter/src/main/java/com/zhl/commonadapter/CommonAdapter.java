@@ -1,6 +1,5 @@
 package com.zhl.commonadapter;
 
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +42,6 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
         }
     }
 
-    @Nullable
     @Override
     public T getItem(int position) {
         if (position >= 0 && position < mDatas.size()) {

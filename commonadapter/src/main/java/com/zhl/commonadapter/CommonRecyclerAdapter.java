@@ -1,7 +1,6 @@
 package com.zhl.commonadapter;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -128,7 +127,6 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
         mFooter.add(baseViewHolder);
     }
 
-    @Nullable
     public T getItem(int position){
         if (position >= mHeader.size() && position < (mDatas.size() + mHeader.size())) {
             return mDatas.get(position);
