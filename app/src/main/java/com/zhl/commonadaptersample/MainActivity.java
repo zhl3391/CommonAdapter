@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.btn_list_view, R.id.btn_recycler_view})
+    @OnClick({R.id.btn_list_view, R.id.btn_recycler_view, R.id.btn_recycler_view_grid})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_list_view:
@@ -25,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.btn_recycler_view:
                 startActivity(new Intent(this, RecyclerViewActivity.class));
+                break;
+            case R.id.btn_recycler_view_grid:
+                startActivity(RecyclerViewActivity.createIntent(this, true));
                 break;
         }
     }

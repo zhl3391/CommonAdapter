@@ -9,7 +9,7 @@ import android.view.View;
  */
 public abstract class BaseViewHolder<T> {
 
-    public Context mContext;
+    protected Context mContext;
 
     public void bindView(View view){
         mContext = view.getContext();

@@ -9,13 +9,18 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by zhouhl on 2016/6/3.
- * DataViewHolder
+ * Created by zhl on 16/6/6.
  */
-public class DataViewHolder extends BaseViewHolder<TestData> {
+public class HeaderViewHolder extends BaseViewHolder<Header>{
 
     @Bind(R.id.textView)
     TextView mTextView;
+
+    private Header mHeader;
+
+    public HeaderViewHolder(Header header) {
+        mHeader = header;
+    }
 
     @Override
     public void bindView(View view) {
@@ -24,12 +29,8 @@ public class DataViewHolder extends BaseViewHolder<TestData> {
     }
 
     @Override
-    public void updateView(TestData data, int position) {
-        if (data == null) {
-            System.out.println(position + "--");
-        } else {
-            mTextView.setText(data.text);
-        }
+    public void updateView(Header data, int position) {
+        mTextView.setText(mHeader.text);
     }
 
     @Override

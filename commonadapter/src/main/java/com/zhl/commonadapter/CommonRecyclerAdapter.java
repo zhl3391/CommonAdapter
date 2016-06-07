@@ -1,11 +1,14 @@
 package com.zhl.commonadapter;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,17 +17,90 @@ import java.util.List;
  */
 public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
 
+    private static final int TYPE_HEADER = 10;
+    private static final int TYPE_FOOTER = 11;
+    private static final int TYPE_NORMAL = 12;
+
     private List<T> mDatas;
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
+
+    private List<BaseViewHolder> mHeader = new ArrayList<>();
+    private List<BaseViewHolder> mFooter = new ArrayList<>();
 
     public CommonRecyclerAdapter(){
 
     }
 
     public CommonRecyclerAdapter(List<T> datas){
-        this.mDatas = datas;
+        mDatas = datas;
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position < mHeader.size()) {
+            return TYPE_HEADER;
+        } else if (position < mDatas.size() + mHeader.size()) {
+            return TYPE_NORMAL;
+        } else {
+            return TYPE_FOOTER;
+        }
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        switch (viewType) {
+            case TYPE_HEADER:
+                return new ViewHolder(parent.getContext(), parent, mHeader.get(0));
+            case TYPE_NORMAL:
+                return new ViewHolder(parent.getContext(), parent, createViewHolder(viewType));
+            case TYPE_FOOTER:
+                return new ViewHolder(parent.getContext(), parent, mFooter.get(0));
+            default:
+                return new ViewHolder(parent.getContext(), parent, createViewHolder(viewType));
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        if (position < mHeader.size()) {
+            ((ViewHolder)holder).baseViewHolder.updateView(null, position);
+        } else if (position < mDatas.size() + mHeader.size()) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnItemClickListener != null) {
+                        mOnItemClickListener.onItemClick(holder.itemView, position - mHeader.size());
+                    }
+                }
+            });
+
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (mOnItemLongClickListener != null) {
+                        mOnItemLongClickListener.onItemLongClick(holder.itemView, position - mHeader.size());
+                    }
+                    return false;
+                }
+            });
+            ((ViewHolder)holder).baseViewHolder.updateView(mDatas.get(position - mHeader.size()),
+                    position - mHeader.size());
+        } else {
+            ((ViewHolder)holder).baseViewHolder.updateView(null, position - mHeader.size() - mDatas.size());
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        if (mDatas == null){
+            return 0;
+        }
+
+        return mDatas.size() + mHeader.size() + mFooter.size();
+    }
+
+    public abstract BaseViewHolder<T> createViewHolder(int type);
 
     public void setDatas(List<T> datas) {
         if (mDatas != null) {
@@ -36,48 +112,45 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
         notifyDataSetChanged();
     }
 
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(parent.getContext(), parent, createViewHolder(viewType));
+    public int getHeaderSize() {
+        return mHeader.size();
     }
 
-    @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mOnItemClickListener != null){
-                    mOnItemClickListener.onItemClick(holder.itemView, holder.getAdapterPosition());
-                }
-            }
-        });
-
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (mOnItemLongClickListener != null){
-                    mOnItemLongClickListener.onItemLongClick(holder.itemView, holder.getAdapterPosition());
-                }
-                return false;
-            }
-        });
-        ((ViewHolder)holder).baseViewHolder.updateView(mDatas.get(position), position);
+    public int getFooterSize() {
+        return mFooter.size();
     }
 
-    @Override
-    public int getItemCount() {
-        if (mDatas == null){
-            return 0;
-        }
-
-        return mDatas.size();
+    public void addHeader(BaseViewHolder baseViewHolder) {
+        mHeader.add(baseViewHolder);
     }
 
+    public void addFooter(BaseViewHolder baseViewHolder) {
+        mFooter.add(baseViewHolder);
+    }
+
+    @Nullable
     public T getItem(int position){
-        return mDatas.get(position);
+        if (position >= mHeader.size() && position < (mDatas.size() + mHeader.size())) {
+            return mDatas.get(position);
+        } else {
+            return null;
+        }
     }
 
-    public abstract BaseViewHolder<T> createViewHolder(int type);
+    public GridLayoutManager.SpanSizeLookup createSpanSizeLookup(final int spanCount) {
+        return new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if (position < mHeader.size()) {
+                    return spanCount;
+                } else if (position < mDatas.size() + mHeader.size()){
+                    return 1;
+                } else {
+                    return spanCount;
+                }
+            }
+        };
+    }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
