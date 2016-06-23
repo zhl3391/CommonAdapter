@@ -6,7 +6,6 @@ import android.widget.TextView;
 import com.zhl.commonadapter.BaseViewHolder;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by zhouhl on 2016/6/3.
@@ -20,7 +19,6 @@ public class DataViewHolder extends BaseViewHolder<TestData> {
     @Override
     public void bindView(View view) {
         super.bindView(view);
-        ButterKnife.bind(this, view);
     }
 
     @Override
