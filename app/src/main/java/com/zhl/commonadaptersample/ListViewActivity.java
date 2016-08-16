@@ -26,20 +26,22 @@ public class ListViewActivity extends AppCompatActivity {
     @Bind(R.id.listView)
     ListView mListView;
 
+    private CommonAdapter<TestData> mAdapter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_view);
         ButterKnife.bind(this);
 
-        List<TestData> datas = new ArrayList<>();
+        final List<TestData> datas = new ArrayList<>();
         for (int i = 0; i < 20; i++){
             TestData testData = new TestData();
             testData.text = "test" + i;
             datas.add(testData);
         }
 
-        CommonAdapter<TestData> adapter = new CommonAdapter<TestData>(datas) {
+        mAdapter = new CommonAdapter<TestData>(datas) {
             @Override
             public BaseViewHolder<TestData> createViewHolder(int type) {
                 return new DataViewHolder();
@@ -50,6 +52,8 @@ public class ListViewActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(ListViewActivity.this, "click " + position, Toast.LENGTH_SHORT).show();
+                datas.remove(0);
+                mAdapter.setDatas(datas);
             }
         });
 
@@ -61,6 +65,6 @@ public class ListViewActivity extends AppCompatActivity {
             }
         });
 
-        mListView.setAdapter(adapter);
+        mListView.setAdapter(mAdapter);
     }
 }

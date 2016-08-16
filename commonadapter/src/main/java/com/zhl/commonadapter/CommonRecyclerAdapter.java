@@ -102,12 +102,7 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
     public abstract BaseViewHolder<T> createViewHolder(int type);
 
     public void setDatas(List<T> datas) {
-        if (mDatas != null) {
-            mDatas.clear();
-            mDatas.addAll(datas);
-        } else {
-            mDatas = datas;
-        }
+        mDatas = datas;
         notifyDataSetChanged();
     }
 

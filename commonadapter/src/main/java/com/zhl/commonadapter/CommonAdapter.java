@@ -24,12 +24,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
     }
 
     public void setDatas(List<T> datas) {
-        if (mDatas != null) {
-            mDatas.clear();
-            mDatas.addAll(datas);
-        } else {
-            mDatas = datas;
-        }
+        mDatas = datas;
         notifyDataSetChanged();
     }
 
