@@ -7,7 +7,7 @@ CommonAdapter has two CommonAdapter for LisView, GridView, RecyclerView.
 ####Gradle
 ```groovy
 dependencies {
-        compile 'com.zhl.commonadapter:commonadapter:0.2.2'
+        compile 'com.zhl.commonadapter:commonadapter:0.2.3'
 }
 ```
 
@@ -74,6 +74,3 @@ adapter.setOnItemLongClickListener(new CommonRecyclerAdapter.OnItemLongClickList
 
 mRecyclerView.setAdapter(adapter);
 ```
-
-如果在你的项目中使用了ButterKnife,那么可以直接在ViewHolder中使用@Bind注解，不需要调用ButterKnife.bind(this, view);
-如果没有使用，那么就需要自己findView。
