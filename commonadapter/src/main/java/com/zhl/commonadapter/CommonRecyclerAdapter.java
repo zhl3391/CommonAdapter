@@ -5,6 +5,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ import java.util.List;
  * CommonRecyclerAdapter
  */
 public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
+
+    private static final int DEFAULT_DELAY = 100;
 
     private static final int TYPE_HEADER = 10;
     private static final int TYPE_FOOTER = 11;
@@ -27,12 +30,18 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
     private List<BaseViewHolder> mHeader = new ArrayList<>();
     private List<BaseViewHolder> mFooter = new ArrayList<>();
 
+    private int mClickDelay = DEFAULT_DELAY;
+
     public CommonRecyclerAdapter(){
 
     }
 
     public CommonRecyclerAdapter(List<T> datas){
         mDatas = datas;
+    }
+
+    public void setClickDelay(int clickDelay) {
+        mClickDelay = clickDelay;
     }
 
     @Override
@@ -69,7 +78,12 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
                 @Override
                 public void onClick(View v) {
                     if (mOnItemClickListener != null) {
-                        mOnItemClickListener.onItemClick(holder.itemView, position - mHeader.size());
+                        holder.itemView.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mOnItemClickListener.onItemClick(holder.itemView, holder.getLayoutPosition() - mHeader.size());
+                            }
+                        }, mClickDelay);
                     }
                 }
             });
@@ -78,7 +92,7 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
                 @Override
                 public boolean onLongClick(View v) {
                     if (mOnItemLongClickListener != null) {
-                        mOnItemLongClickListener.onItemLongClick(holder.itemView, position - mHeader.size());
+                        mOnItemLongClickListener.onItemLongClick(holder.itemView, holder.getLayoutPosition() - mHeader.size());
                     }
                     return false;
                 }

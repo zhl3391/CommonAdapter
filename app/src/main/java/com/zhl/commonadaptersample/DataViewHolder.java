@@ -18,8 +18,7 @@ public class DataViewHolder extends BaseViewHolder<TestData> {
     TextView mTextView;
 
     @Override
-    public void bindView(View view) {
-        super.bindView(view);
+    public void findView(View view) {
         ButterKnife.bind(this, view);
     }
 

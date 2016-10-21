@@ -13,7 +13,10 @@ public abstract class BaseViewHolder<T> {
 
     public void bindView(View view){
         mContext = view.getContext();
+        findView(view);
     }
+
+    public abstract void findView(View view);
 
     public abstract void updateView(T data, int position);
 

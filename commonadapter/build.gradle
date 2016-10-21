@@ -2,11 +2,11 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = "0.2.3"
+version = "0.2.4"
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    buildToolsVersion "24.0.2"
 
     defaultConfig {
         minSdkVersion 15
@@ -23,7 +23,7 @@ android {
 }
 
 dependencies {
-    provided "com.android.support:recyclerview-v7:24.1.1"
+    provided "com.android.support:recyclerview-v7:24.2.1"
 }
 
 def siteUrl = 'https://github.com/zhl3391/CommonAdapter'    // project homepage

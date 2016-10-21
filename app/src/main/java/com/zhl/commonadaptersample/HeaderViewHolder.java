@@ -23,8 +23,7 @@ public class HeaderViewHolder extends BaseViewHolder<Header>{
     }
 
     @Override
-    public void bindView(View view) {
-        super.bindView(view);
+    public void findView(View view) {
         ButterKnife.bind(this, view);
     }
 

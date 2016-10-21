@@ -68,7 +68,8 @@ public class RecyclerViewActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new CommonRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(RecyclerViewActivity.this, "click " + position, Toast.LENGTH_SHORT).show();
+                startActivity(createIntent(RecyclerViewActivity.this, false));
+                finish();
             }
         });
 

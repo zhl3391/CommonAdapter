@@ -23,8 +23,7 @@ public class FooterViewHolder extends BaseViewHolder<Footer>{
     }
 
     @Override
-    public void bindView(View view) {
-        super.bindView(view);
+    public void findView(View view) {
         ButterKnife.bind(this, view);
     }
 
