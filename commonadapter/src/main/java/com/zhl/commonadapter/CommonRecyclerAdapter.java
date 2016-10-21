@@ -81,7 +81,10 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
                         holder.itemView.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                mOnItemClickListener.onItemClick(holder.itemView, holder.getLayoutPosition() - mHeader.size());
+                                int realPosition = holder.getAdapterPosition();
+                                if (realPosition >= 0) {
+                                    mOnItemClickListener.onItemClick(holder.itemView, realPosition - mHeader.size());
+                                }
                             }
                         }, mClickDelay);
                     }
@@ -92,7 +95,10 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
                 @Override
                 public boolean onLongClick(View v) {
                     if (mOnItemLongClickListener != null) {
-                        mOnItemLongClickListener.onItemLongClick(holder.itemView, holder.getLayoutPosition() - mHeader.size());
+                        int realPosition = holder.getAdapterPosition();
+                        if (realPosition >= 0) {
+                            mOnItemLongClickListener.onItemLongClick(holder.itemView, realPosition - mHeader.size());
+                        }
                     }
                     return false;
                 }

@@ -45,8 +45,8 @@ public class RecyclerViewActivity extends AppCompatActivity {
 
         boolean isGrid = getIntent().getBooleanExtra(KEY_IS_GRID, false);
 
-        List<TestData> datas = new ArrayList<>();
-        for (int i = 0; i < 20; i++){
+        final List<TestData> datas = new ArrayList<>();
+        for (int i = 0; i < 40; i++){
             TestData testData = new TestData();
             testData.text = "test" + i;
             datas.add(testData);
@@ -59,11 +59,11 @@ public class RecyclerViewActivity extends AppCompatActivity {
             }
         };
 
-        adapter.addHeader(new HeaderViewHolder(new Header()));
-        adapter.addHeader(new HeaderViewHolder(new Header()));
-
-        adapter.addFooter(new FooterViewHolder(new Footer()));
-        adapter.addFooter(new FooterViewHolder(new Footer()));
+//        adapter.addHeader(new HeaderViewHolder(new Header()));
+//        adapter.addHeader(new HeaderViewHolder(new Header()));
+//
+//        adapter.addFooter(new FooterViewHolder(new Footer()));
+//        adapter.addFooter(new FooterViewHolder(new Footer()));
 
         adapter.setOnItemClickListener(new CommonRecyclerAdapter.OnItemClickListener() {
             @Override
@@ -76,7 +76,8 @@ public class RecyclerViewActivity extends AppCompatActivity {
         adapter.setOnItemLongClickListener(new CommonRecyclerAdapter.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(View view, int position) {
-                Toast.makeText(RecyclerViewActivity.this, "long click " + position, Toast.LENGTH_SHORT).show();
+                datas.remove(position);
+                adapter.notifyItemRemoved(position);
                 return true;
             }
         });
