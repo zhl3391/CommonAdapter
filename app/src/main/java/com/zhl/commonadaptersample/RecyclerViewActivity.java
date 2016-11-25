@@ -59,17 +59,18 @@ public class RecyclerViewActivity extends AppCompatActivity {
             }
         };
 
-//        adapter.addHeader(new HeaderViewHolder(new Header()));
-//        adapter.addHeader(new HeaderViewHolder(new Header()));
-//
-//        adapter.addFooter(new FooterViewHolder(new Footer()));
-//        adapter.addFooter(new FooterViewHolder(new Footer()));
+        adapter.addHeader(new HeaderViewHolder(new Header()));
+        adapter.addHeader(new HeaderViewHolder(new Header()));
+
+        adapter.addFooter(new FooterViewHolder(new Footer()));
+        adapter.addFooter(new FooterViewHolder(new Footer()));
 
         adapter.setOnItemClickListener(new CommonRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                startActivity(createIntent(RecyclerViewActivity.this, false));
-                finish();
+//                startActivity(createIntent(RecyclerViewActivity.this, false));
+//                finish();
+                Toast.makeText(RecyclerViewActivity.this, adapter.getItem(position).text, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -77,7 +78,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(View view, int position) {
                 datas.remove(position);
-                adapter.notifyItemRemoved(position);
+                adapter.notifyItemRemoved(position + adapter.getHeaderSize());
                 return true;
             }
         });

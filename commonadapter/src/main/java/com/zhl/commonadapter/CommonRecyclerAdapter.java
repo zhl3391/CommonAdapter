@@ -143,10 +143,10 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
     }
 
     public T getItem(int position){
-        if (position >= mHeader.size() && position < (mDatas.size() + mHeader.size())) {
+        if (position >= 0 && position < mDatas.size()) {
             return mDatas.get(position);
         } else {
-            return null;
+            throw new IndexOutOfBoundsException("data size = " + mDatas.size() + " position = " + position);
         }
     }
 
