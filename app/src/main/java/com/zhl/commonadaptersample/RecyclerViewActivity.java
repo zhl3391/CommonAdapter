@@ -47,8 +47,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
 
         final List<TestData> datas = new ArrayList<>();
         for (int i = 0; i < 40; i++){
-            TestData testData = new TestData();
-            testData.text = "test" + i;
+            TestData testData = new TestData("test" + i);
             datas.add(testData);
         }
 
@@ -59,11 +58,11 @@ public class RecyclerViewActivity extends AppCompatActivity {
             }
         };
 
-        adapter.addHeader(new HeaderViewHolder(new Header()));
-        adapter.addHeader(new HeaderViewHolder(new Header()));
+        adapter.addHeader(new HeadFootViewHolder(new TestData("head1")));
+        adapter.addHeader(new HeadFootViewHolder(new TestData("head2")));
 
-        adapter.addFooter(new FooterViewHolder(new Footer()));
-        adapter.addFooter(new FooterViewHolder(new Footer()));
+        adapter.addFooter(new HeadFootViewHolder(new TestData("foot1")));
+        adapter.addFooter(new HeadFootViewHolder(new TestData("foot2")));
 
         adapter.setOnItemClickListener(new CommonRecyclerAdapter.OnItemClickListener() {
             @Override

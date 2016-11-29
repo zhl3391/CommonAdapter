@@ -7,4 +7,8 @@ package com.zhl.commonadaptersample;
 public class TestData {
 
     public String text;
+
+    public TestData(String text) {
+        this.text = text;
+    }
 }

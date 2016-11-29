@@ -57,8 +57,11 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
 
         if (convertView == null){
             holder = createViewHolder(getItemViewType(position));
-            convertView = LayoutInflater.from(parent.getContext())
-                    .inflate(holder.getLayoutResId(), parent, false);
+            convertView = holder.getDataBindingRoot(parent.getContext(), parent);
+            if (convertView == null) {
+                convertView = LayoutInflater.from(parent.getContext())
+                        .inflate(holder.getLayoutResId(), parent, false);
+            }
             holder.bindView(convertView);
             convertView.setTag(holder);
         }else {

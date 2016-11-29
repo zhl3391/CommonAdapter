@@ -37,8 +37,7 @@ public class ListViewActivity extends AppCompatActivity {
 
         final List<TestData> datas = new ArrayList<>();
         for (int i = 0; i < 20; i++){
-            TestData testData = new TestData();
-            testData.text = "test" + i;
+            TestData testData = new TestData("test" + i);
             datas.add(testData);
         }
 

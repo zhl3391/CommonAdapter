@@ -1,11 +1,9 @@
 package com.zhl.commonadapter;
 
-import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -57,15 +55,24 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        BaseViewHolder baseViewHolder;
         switch (viewType) {
             case TYPE_HEADER:
-                return new ViewHolder(parent.getContext(), parent, mHeader.get(0));
+                baseViewHolder = mHeader.get(0);
+                return new ViewHolder(parent, baseViewHolder,
+                        baseViewHolder.getDataBindingRoot(parent.getContext(), parent));
             case TYPE_NORMAL:
-                return new ViewHolder(parent.getContext(), parent, createViewHolder(viewType));
+                baseViewHolder = createViewHolder(viewType);
+                return new ViewHolder(parent, baseViewHolder,
+                        baseViewHolder.getDataBindingRoot(parent.getContext(), parent));
             case TYPE_FOOTER:
-                return new ViewHolder(parent.getContext(), parent, mFooter.get(0));
+                baseViewHolder = mFooter.get(0);
+                return new ViewHolder(parent, baseViewHolder,
+                        baseViewHolder.getDataBindingRoot(parent.getContext(), parent));
             default:
-                return new ViewHolder(parent.getContext(), parent, createViewHolder(viewType));
+                baseViewHolder = createViewHolder(viewType);
+                return new ViewHolder(parent, baseViewHolder,
+                        baseViewHolder.getDataBindingRoot(parent.getContext(), parent));
         }
     }
 
@@ -177,8 +184,8 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
 
         public BaseViewHolder baseViewHolder;
 
-        public ViewHolder(Context context, ViewGroup parent, BaseViewHolder baseViewHolder){
-            super(LayoutInflater.from(context).inflate(baseViewHolder.getLayoutResId(), parent, false));
+        public ViewHolder(ViewGroup parent, BaseViewHolder baseViewHolder, View root){
+            super(root != null ? root : LayoutInflater.from(parent.getContext()).inflate(baseViewHolder.getLayoutResId(), parent, false));
             this.baseViewHolder = baseViewHolder;
             this.baseViewHolder.bindView(itemView);
         }

@@ -2,6 +2,7 @@ package com.zhl.commonadapter;
 
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * Created by zhouhl on 2016/2/22.
@@ -14,6 +15,10 @@ public abstract class BaseViewHolder<T> {
     public void bindView(View view){
         mContext = view.getContext();
         findView(view);
+    }
+
+    public View getDataBindingRoot(Context context, ViewGroup parent) {
+        return null;
     }
 
     public abstract void findView(View view);
