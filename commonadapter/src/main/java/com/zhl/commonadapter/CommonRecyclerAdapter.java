@@ -149,6 +149,14 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
         mFooter.add(baseViewHolder);
     }
 
+    public void removeHeader(BaseViewHolder baseViewHolder) {
+        mHeader.remove(baseViewHolder);
+    }
+
+    public void removeFooter(BaseViewHolder baseViewHolder) {
+        mFooter.remove(baseViewHolder);
+    }
+
     public T getItem(int position){
         if (position >= 0 && position < mDatas.size()) {
             return mDatas.get(position);
