@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 public abstract class BaseViewHolder<T> {
 
     protected Context mContext;
+    protected View mItemView;
 
     public void bindView(View view){
+        mItemView = view;
         mContext = view.getContext();
         findView(view);
     }
@@ -26,5 +28,9 @@ public abstract class BaseViewHolder<T> {
     public abstract void updateView(T data, int position);
 
     public abstract int getLayoutResId();
+
+    public View getItemView() {
+        return mItemView;
+    }
 
 }
