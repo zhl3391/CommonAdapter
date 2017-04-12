@@ -17,9 +17,9 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
 
     private static final int DEFAULT_DELAY = 100;
 
-    private static final int TYPE_HEADER = 10;
-    private static final int TYPE_FOOTER = 11;
-    private static final int TYPE_NORMAL = 12;
+    public static final int TYPE_HEADER = 10;
+    public static final int TYPE_FOOTER = 11;
+    public static final int TYPE_NORMAL = 12;
 
     private List<T> mDatas;
     private OnItemClickListener mOnItemClickListener;
@@ -158,10 +158,11 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
     }
 
     public T getItem(int position){
+        position = position - mHeader.size();
         if (position >= 0 && position < mDatas.size()) {
             return mDatas.get(position);
         } else {
-            throw new IndexOutOfBoundsException("data size = " + mDatas.size() + " position = " + position);
+            return null;
         }
     }
 
