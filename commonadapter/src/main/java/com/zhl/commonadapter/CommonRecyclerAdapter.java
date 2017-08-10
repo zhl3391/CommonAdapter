@@ -17,16 +17,18 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
 
     private static final int DEFAULT_DELAY = 100;
 
-    private static final int TYPE_HEADER = 10;
-    private static final int TYPE_FOOTER = 11;
-    private static final int TYPE_NORMAL = 12;
+    private static final int MAX_HEADER_FOOTER_COUNT = 10;
+
+    private static final int TYPE_HEADER = 100;
+    private static final int TYPE_FOOTER = TYPE_HEADER + MAX_HEADER_FOOTER_COUNT;
+    private static final int TYPE_NORMAL = TYPE_FOOTER + MAX_HEADER_FOOTER_COUNT;
 
     private List<T> mDatas;
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
 
-    private List<BaseViewHolder> mHeader = new ArrayList<>();
-    private List<BaseViewHolder> mFooter = new ArrayList<>();
+    private List<BaseViewHolder> mHeaders = new ArrayList<>();
+    private List<BaseViewHolder> mFooters = new ArrayList<>();
 
     private int mClickDelay = DEFAULT_DELAY;
 
@@ -44,43 +46,38 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
 
     @Override
     public int getItemViewType(int position) {
-        if (position < mHeader.size()) {
-            return TYPE_HEADER;
-        } else if (position < mDatas.size() + mHeader.size()) {
+        if (position < mHeaders.size()) {
+            return TYPE_HEADER + position;
+        } else if (position < mDatas.size() + mHeaders.size()) {
             return TYPE_NORMAL;
         } else {
-            return TYPE_FOOTER;
+            return TYPE_FOOTER + position - mHeaders.size() - mDatas.size();
         }
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         BaseViewHolder baseViewHolder;
-        switch (viewType) {
-            case TYPE_HEADER:
-                baseViewHolder = mHeader.get(0);
-                return new ViewHolder(parent, baseViewHolder,
-                        baseViewHolder.getDataBindingRoot(parent.getContext(), parent));
-            case TYPE_NORMAL:
-                baseViewHolder = createViewHolder(viewType);
-                return new ViewHolder(parent, baseViewHolder,
-                        baseViewHolder.getDataBindingRoot(parent.getContext(), parent));
-            case TYPE_FOOTER:
-                baseViewHolder = mFooter.get(0);
-                return new ViewHolder(parent, baseViewHolder,
-                        baseViewHolder.getDataBindingRoot(parent.getContext(), parent));
-            default:
-                baseViewHolder = createViewHolder(viewType);
-                return new ViewHolder(parent, baseViewHolder,
-                        baseViewHolder.getDataBindingRoot(parent.getContext(), parent));
+        if (viewType >= TYPE_HEADER && viewType < TYPE_HEADER + MAX_HEADER_FOOTER_COUNT) {
+            baseViewHolder = mHeaders.get(viewType - TYPE_HEADER);
+            return new ViewHolder(parent, baseViewHolder,
+                    baseViewHolder.getDataBindingRoot(parent.getContext(), parent));
+        } else if (viewType >= TYPE_FOOTER && viewType < TYPE_FOOTER + MAX_HEADER_FOOTER_COUNT) {
+            baseViewHolder = mFooters.get(viewType - TYPE_FOOTER);
+            return new ViewHolder(parent, baseViewHolder,
+                    baseViewHolder.getDataBindingRoot(parent.getContext(), parent));
+        } else {
+            baseViewHolder = createViewHolder(viewType);
+            return new ViewHolder(parent, baseViewHolder,
+                    baseViewHolder.getDataBindingRoot(parent.getContext(), parent));
         }
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        if (position < mHeader.size()) {
+        if (position < mHeaders.size()) {
             ((ViewHolder)holder).baseViewHolder.updateView(null, position);
-        } else if (position < mDatas.size() + mHeader.size()) {
+        } else if (position < mDatas.size() + mHeaders.size()) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -90,7 +87,7 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
                             public void run() {
                                 int realPosition = holder.getAdapterPosition();
                                 if (realPosition >= 0) {
-                                    mOnItemClickListener.onItemClick(holder.itemView, realPosition - mHeader.size());
+                                    mOnItemClickListener.onItemClick(holder.itemView, realPosition - mHeaders.size());
                                 }
                             }
                         }, mClickDelay);
@@ -104,16 +101,16 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
                     if (mOnItemLongClickListener != null) {
                         int realPosition = holder.getAdapterPosition();
                         if (realPosition >= 0) {
-                            mOnItemLongClickListener.onItemLongClick(holder.itemView, realPosition - mHeader.size());
+                            mOnItemLongClickListener.onItemLongClick(holder.itemView, realPosition - mHeaders.size());
                         }
                     }
                     return false;
                 }
             });
-            ((ViewHolder)holder).baseViewHolder.updateView(mDatas.get(position - mHeader.size()),
-                    position - mHeader.size());
+            ((ViewHolder)holder).baseViewHolder.updateView(mDatas.get(position - mHeaders.size()),
+                    position - mHeaders.size());
         } else {
-            ((ViewHolder)holder).baseViewHolder.updateView(null, position - mHeader.size() - mDatas.size());
+            ((ViewHolder)holder).baseViewHolder.updateView(null, position - mHeaders.size() - mDatas.size());
         }
     }
 
@@ -123,7 +120,7 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
             return 0;
         }
 
-        return mDatas.size() + mHeader.size() + mFooter.size();
+        return mDatas.size() + mHeaders.size() + mFooters.size();
     }
 
     public abstract BaseViewHolder<T> createViewHolder(int type);
@@ -134,27 +131,31 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
     }
 
     public int getHeaderSize() {
-        return mHeader.size();
+        return mHeaders.size();
     }
 
     public int getFooterSize() {
-        return mFooter.size();
+        return mFooters.size();
     }
 
     public void addHeader(BaseViewHolder baseViewHolder) {
-        mHeader.add(baseViewHolder);
+        if (mHeaders.size() < MAX_HEADER_FOOTER_COUNT) {
+            mHeaders.add(baseViewHolder);
+        }
     }
 
     public void addFooter(BaseViewHolder baseViewHolder) {
-        mFooter.add(baseViewHolder);
+        if (mFooters.size() < MAX_HEADER_FOOTER_COUNT) {
+            mFooters.add(baseViewHolder);
+        }
     }
 
     public void removeHeader(BaseViewHolder baseViewHolder) {
-        mHeader.remove(baseViewHolder);
+        mHeaders.remove(baseViewHolder);
     }
 
     public void removeFooter(BaseViewHolder baseViewHolder) {
-        mFooter.remove(baseViewHolder);
+        mFooters.remove(baseViewHolder);
     }
 
     public T getItem(int position){
@@ -169,9 +170,9 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
         return new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                if (position < mHeader.size()) {
+                if (position < mHeaders.size()) {
                     return spanCount;
-                } else if (position < mDatas.size() + mHeader.size()){
+                } else if (position < mDatas.size() + mHeaders.size()){
                     return 1;
                 } else {
                     return spanCount;

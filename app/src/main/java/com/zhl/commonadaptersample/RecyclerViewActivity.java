@@ -60,9 +60,23 @@ public class RecyclerViewActivity extends AppCompatActivity {
 
         adapter.addHeader(new HeadFootViewHolder(new TestData("head1")));
         adapter.addHeader(new HeadFootViewHolder(new TestData("head2")));
+        adapter.addHeader(new HeadFootViewHolder(new TestData("head3")));
+        adapter.addHeader(new HeadFootViewHolder(new TestData("head4")));
+        adapter.addHeader(new HeadFootViewHolder(new TestData("head5")));
+        adapter.addHeader(new HeadFootViewHolder(new TestData("head6")));
+        adapter.addHeader(new HeadFootViewHolder(new TestData("head7")));
+        adapter.addHeader(new HeadFootViewHolder(new TestData("head8")));
+        adapter.addHeader(new HeadFootViewHolder(new TestData("head9")));
+        adapter.addHeader(new HeadFootViewHolder(new TestData("head10")));
+        adapter.addHeader(new HeadFootViewHolder(new TestData("head11")));
 
         adapter.addFooter(new HeadFootViewHolder(new TestData("foot1")));
         adapter.addFooter(new HeadFootViewHolder(new TestData("foot2")));
+        adapter.addFooter(new HeadFootViewHolder(new TestData("foot3")));
+        adapter.addFooter(new HeadFootViewHolder(new TestData("foot4")));
+        adapter.addFooter(new HeadFootViewHolder(new TestData("foot5")));
+        adapter.addFooter(new HeadFootViewHolder(new TestData("foot6")));
+        adapter.addFooter(new HeadFootViewHolder(new TestData("foot7")));
 
         adapter.setOnItemClickListener(new CommonRecyclerAdapter.OnItemClickListener() {
             @Override
