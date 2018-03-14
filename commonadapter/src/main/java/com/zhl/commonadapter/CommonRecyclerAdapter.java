@@ -101,7 +101,7 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
                     if (mOnItemLongClickListener != null) {
                         int realPosition = holder.getAdapterPosition();
                         if (realPosition >= 0) {
-                            mOnItemLongClickListener.onItemLongClick(holder.itemView, realPosition - mHeaders.size());
+                            return mOnItemLongClickListener.onItemLongClick(holder.itemView, realPosition - mHeaders.size());
                         }
                     }
                     return false;
@@ -159,10 +159,11 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
     }
 
     public T getItem(int position){
+        position = position - mHeaders.size();
         if (position >= 0 && position < mDatas.size()) {
             return mDatas.get(position);
         } else {
-            throw new IndexOutOfBoundsException("data size = " + mDatas.size() + " position = " + position);
+            return null;
         }
     }
 
