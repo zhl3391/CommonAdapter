@@ -7,7 +7,7 @@ CommonAdapter has two CommonAdapter for LisView, GridView, RecyclerView.
 #### Gradle
 ```groovy
 dependencies {
-        compile 'com.zhl.commonadapter:commonadapter:0.3.4'
+        compile 'com.zhl.commonadapter:commonadapter:0.3.9'
 }
 ```
 

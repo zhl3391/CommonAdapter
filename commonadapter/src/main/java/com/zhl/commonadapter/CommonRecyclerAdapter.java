@@ -76,6 +76,8 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (position < mHeaders.size()) {
+            holder.itemView.setOnClickListener(null);
+            holder.itemView.setOnLongClickListener(null);
             ((ViewHolder)holder).baseViewHolder.updateView(null, position);
         } else if (position < mDatas.size() + mHeaders.size()) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -86,9 +88,7 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
                             @Override
                             public void run() {
                                 int realPosition = holder.getAdapterPosition();
-                                if (realPosition >= 0) {
-                                    mOnItemClickListener.onItemClick(holder.itemView, realPosition - mHeaders.size());
-                                }
+                                mOnItemClickListener.onItemClick(holder.itemView, realPosition);
                             }
                         }, mClickDelay);
                     }
@@ -100,9 +100,7 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
                 public boolean onLongClick(View v) {
                     if (mOnItemLongClickListener != null) {
                         int realPosition = holder.getAdapterPosition();
-                        if (realPosition >= 0) {
-                            return mOnItemLongClickListener.onItemLongClick(holder.itemView, realPosition - mHeaders.size());
-                        }
+                        return mOnItemLongClickListener.onItemLongClick(holder.itemView, realPosition);
                     }
                     return false;
                 }
@@ -110,6 +108,8 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
             ((ViewHolder)holder).baseViewHolder.updateView(mDatas.get(position - mHeaders.size()),
                     position - mHeaders.size());
         } else {
+            holder.itemView.setOnClickListener(null);
+            holder.itemView.setOnLongClickListener(null);
             ((ViewHolder)holder).baseViewHolder.updateView(null, position - mHeaders.size() - mDatas.size());
         }
     }
@@ -159,12 +159,16 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
     }
 
     public T getItem(int position){
-        position = position - mHeaders.size();
+        position = getDataRealPosition(position);
         if (position >= 0 && position < mDatas.size()) {
             return mDatas.get(position);
         } else {
             return null;
         }
+    }
+
+    public int getDataRealPosition(int position) {
+        return position - mHeaders.size();
     }
 
     public GridLayoutManager.SpanSizeLookup createSpanSizeLookup(final int spanCount) {
