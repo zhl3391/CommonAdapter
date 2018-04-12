@@ -1,5 +1,6 @@
 package com.zhl.commonadapter;
 
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -88,7 +89,9 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
                             @Override
                             public void run() {
                                 int realPosition = holder.getAdapterPosition();
-                                mOnItemClickListener.onItemClick(holder.itemView, realPosition);
+                                if (isInBounds(realPosition)) {
+                                    mOnItemClickListener.onItemClick(holder.itemView, realPosition);
+                                }
                             }
                         }, mClickDelay);
                     }
@@ -100,7 +103,11 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
                 public boolean onLongClick(View v) {
                     if (mOnItemLongClickListener != null) {
                         int realPosition = holder.getAdapterPosition();
-                        return mOnItemLongClickListener.onItemLongClick(holder.itemView, realPosition);
+                        if (isInBounds(realPosition)) {
+                            return mOnItemLongClickListener.onItemLongClick(holder.itemView, realPosition);
+                        } else {
+                            return false;
+                        }
                     }
                     return false;
                 }
@@ -158,6 +165,7 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
         mFooters.remove(baseViewHolder);
     }
 
+    @Nullable
     public T getItem(int position){
         position = getDataRealPosition(position);
         if (position >= 0 && position < mDatas.size()) {
@@ -192,6 +200,11 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
 
     public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {
         this.mOnItemLongClickListener = onItemLongClickListener;
+    }
+
+    private boolean isInBounds(int position) {
+        position = getDataRealPosition(position);
+        return position >= 0 && position < mDatas.size();
     }
 
     private static class ViewHolder extends RecyclerView.ViewHolder{
