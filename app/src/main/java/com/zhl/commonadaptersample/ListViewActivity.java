@@ -2,8 +2,9 @@ package com.zhl.commonadaptersample;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -15,25 +16,21 @@ import com.zhl.commonadapter.CommonAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 /**
  * Created by zhouhl on 2016/6/3.
  * ListViewActivity
  */
 public class ListViewActivity extends AppCompatActivity {
 
-    @Bind(R.id.listView)
-    ListView mListView;
-
     private CommonAdapter<TestData> mAdapter;
+    private ListView mListView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_view);
-        ButterKnife.bind(this);
+
+        mListView = findViewById(R.id.listView);
 
         final List<TestData> datas = new ArrayList<>();
         for (int i = 0; i < 20; i++){

@@ -3,11 +3,12 @@ package com.zhl.commonadaptersample;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,8 +18,6 @@ import com.zhl.commonadapter.CommonRecyclerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by zhouhl on 2016/6/3.
@@ -28,8 +27,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
 
     private static final String KEY_IS_GRID = "is_grid";
 
-    @Bind(R.id.recyclerView)
-    RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
 
     public static Intent createIntent(Context context, boolean isGrid) {
         Intent intent = new Intent(context, RecyclerViewActivity.class);
@@ -41,7 +39,8 @@ public class RecyclerViewActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler_view);
-        ButterKnife.bind(this);
+
+        mRecyclerView = findViewById(R.id.recyclerView);
 
         boolean isGrid = getIntent().getBooleanExtra(KEY_IS_GRID, false);
 

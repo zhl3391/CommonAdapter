@@ -1,11 +1,13 @@
 package com.zhl.commonadapter;
 
-import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,7 @@ import java.util.List;
  * Created by zhl on 16/2/23.
  * CommonRecyclerAdapter
  */
-public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
+public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<CommonRecyclerAdapter.ViewHolder> {
 
     private static final int DEFAULT_DELAY = 100;
 
@@ -57,7 +59,7 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         BaseViewHolder baseViewHolder;
         if (viewType >= TYPE_HEADER && viewType < TYPE_HEADER + MAX_HEADER_FOOTER_COUNT) {
             baseViewHolder = mHeaders.get(viewType - TYPE_HEADER);
@@ -75,11 +77,11 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         if (position < mHeaders.size()) {
             holder.itemView.setOnClickListener(null);
             holder.itemView.setOnLongClickListener(null);
-            ((ViewHolder)holder).baseViewHolder.updateView(null, position);
+            holder.baseViewHolder.updateView(null, position);
         } else if (position < mDatas.size() + mHeaders.size()) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -112,18 +114,18 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
                     return false;
                 }
             });
-            ((ViewHolder)holder).baseViewHolder.updateView(mDatas.get(position - mHeaders.size()),
+            holder.baseViewHolder.updateView(mDatas.get(position - mHeaders.size()),
                     position - mHeaders.size());
         } else {
             holder.itemView.setOnClickListener(null);
             holder.itemView.setOnLongClickListener(null);
-            ((ViewHolder)holder).baseViewHolder.updateView(null, position - mHeaders.size() - mDatas.size());
+            holder.baseViewHolder.updateView(null, position - mHeaders.size() - mDatas.size());
         }
     }
 
     @Override
     public int getItemCount() {
-        if (mDatas == null){
+        if (mDatas == null) {
             return 0;
         }
 
@@ -207,7 +209,7 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter{
         return position >= 0 && position < mDatas.size();
     }
 
-    private static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public BaseViewHolder baseViewHolder;
 
