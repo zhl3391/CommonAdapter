@@ -169,7 +169,7 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<Comm
 
     @Nullable
     public T getItem(int position){
-        position = getDataRealPosition(position);
+//        position = getDataRealPosition(position);
         if (position >= 0 && position < mDatas.size()) {
             return mDatas.get(position);
         } else {
