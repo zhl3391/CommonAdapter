@@ -18,7 +18,7 @@ import java.util.List;
  */
 public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<CommonRecyclerAdapter.ViewHolder> {
 
-    private static final int DEFAULT_DELAY = 100;
+    private static final int DEFAULT_DELAY = 0;
 
     private static final int MAX_HEADER_FOOTER_COUNT = 10;
 
@@ -169,7 +169,7 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<Comm
 
     @Nullable
     public T getItem(int position){
-//        position = getDataRealPosition(position);
+        position = getDataRealPosition(position);
         if (position >= 0 && position < mDatas.size()) {
             return mDatas.get(position);
         } else {
